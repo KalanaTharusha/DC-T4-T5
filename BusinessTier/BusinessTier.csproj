@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{733F602F-118D-49CD-8451-D4521523432D}</ProjectGuid>
+    <ProjectGuid>{AF6F87CE-FF07-4F30-9690-57803BE4967B}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Server</RootNamespace>
-    <AssemblyName>Server</AssemblyName>
+    <RootNamespace>BusinessTier</RootNamespace>
+    <AssemblyName>BusinessTier</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,7 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBServer.cs" />
+    <Compile Include="BusinessServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,13 +52,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataLibrary\DataLibrary.csproj">
-      <Project>{cc8e77cc-c0bc-4b31-a8c1-d7dacefc3c6e}</Project>
-      <Name>DataLibrary</Name>
+    <ProjectReference Include="..\BusinessTierInterface\BusinessTierInterface.csproj">
+      <Project>{94a182b5-672c-46e0-9537-610d710fc6ae}</Project>
+      <Name>BusinessTierInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServerInterface\ServerInterface.csproj">
+    <ProjectReference Include="..\ServerInterface\DataTierInterface.csproj">
       <Project>{864f03c6-b851-4818-ab9b-4198f9b1654c}</Project>
-      <Name>ServerInterface</Name>
+      <Name>DataTierInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

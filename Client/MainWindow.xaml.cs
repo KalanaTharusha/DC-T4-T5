@@ -13,13 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ServiceModel;
-using Server;
 using System.Reflection;
 using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using System.Drawing;
 using System.Windows.Interop;
-using ServerInterface;
+using DataTierInterface;
+using BusinessTierInterface;
 using System.IO;
 
 namespace Client
@@ -29,16 +29,16 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DBServerInterface foob;
+        private BusinessServerInterface foob;
         public MainWindow()
         {
             InitializeComponent();
 
-            ChannelFactory<DBServerInterface> foobFactory;
+            ChannelFactory<BusinessServerInterface> foobFactory;
             NetTcpBinding tcp = new NetTcpBinding();
 
-            string URL = "net.tcp://localhost:8100/DataService";
-            foobFactory = new ChannelFactory<DBServerInterface>(tcp, URL);
+            string URL = "net.tcp://localhost:8101/BusinessService";
+            foobFactory = new ChannelFactory<BusinessServerInterface>(tcp, URL);
             foob = foobFactory.CreateChannel();
 
             ItemCountBlock.Text = "Total Items: " + foob.GetNumEntries().ToString();
@@ -122,5 +122,6 @@ namespace Client
                 }
             });
         }
+
     }
 }

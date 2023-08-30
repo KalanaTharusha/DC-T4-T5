@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using DataLibrary;
 using System.Drawing;
-using ServerInterface;
+using DataTierInterface;
 using System.IO;
 
-namespace Server
+namespace DataTier
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     internal class DBServer : DBServerInterface

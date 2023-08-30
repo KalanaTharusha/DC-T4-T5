@@ -97,9 +97,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServerInterface\ServerInterface.csproj">
+    <ProjectReference Include="..\BusinessTierInterface\BusinessTierInterface.csproj">
+      <Project>{94a182b5-672c-46e0-9537-610d710fc6ae}</Project>
+      <Name>BusinessTierInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerInterface\DataTierInterface.csproj">
       <Project>{864f03c6-b851-4818-ab9b-4198f9b1654c}</Project>
-      <Name>ServerInterface</Name>
+      <Name>DataTierInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

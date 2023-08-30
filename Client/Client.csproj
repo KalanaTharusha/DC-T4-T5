@@ -101,9 +101,9 @@
       <Project>{94a182b5-672c-46e0-9537-610d710fc6ae}</Project>
       <Name>BusinessTierInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServerInterface\DataTierInterface.csproj">
+    <ProjectReference Include="..\ServerInterface\ServerInterface.csproj">
       <Project>{864f03c6-b851-4818-ab9b-4198f9b1654c}</Project>
-      <Name>DataTierInterface</Name>
+      <Name>ServerInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

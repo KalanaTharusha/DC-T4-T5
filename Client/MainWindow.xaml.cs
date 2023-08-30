@@ -18,7 +18,7 @@ using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using System.Drawing;
 using System.Windows.Interop;
-using DataTierInterface;
+using ServerInterface;
 using BusinessTierInterface;
 using System.IO;
 

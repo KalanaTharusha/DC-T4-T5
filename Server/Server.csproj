@@ -57,9 +57,9 @@
       <Project>{cc8e77cc-c0bc-4b31-a8c1-d7dacefc3c6e}</Project>
       <Name>DataLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServerInterface\DataTierInterface.csproj">
+    <ProjectReference Include="..\ServerInterface\ServerInterface.csproj">
       <Project>{864f03c6-b851-4818-ab9b-4198f9b1654c}</Project>
-      <Name>DataTierInterface</Name>
+      <Name>ServerInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

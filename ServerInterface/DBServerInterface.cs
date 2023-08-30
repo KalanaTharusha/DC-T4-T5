@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using System.Drawing;
 
-namespace DataTierInterface
+namespace ServerInterface
 {
     [ServiceContract]
     public interface DBServerInterface

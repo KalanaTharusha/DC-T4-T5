@@ -7,16 +7,23 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="fNameBox" HorizontalAlignment="Left" Margin="347,153,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="301"/>
-        <TextBox x:Name="lNameBox" HorizontalAlignment="Left" Margin="347,184,0,0" TextWrapping="Wrap" Text="LastName" VerticalAlignment="Top" Width="301"/>
-        <TextBox x:Name="accNoBox" HorizontalAlignment="Left" Margin="347,212,0,0" TextWrapping="Wrap" Text="Account No" VerticalAlignment="Top" Width="301"/>
-        <TextBox x:Name="pinBox" HorizontalAlignment="Left" Margin="347,240,0,0" TextWrapping="Wrap" Text="PIN" VerticalAlignment="Top" Width="301"/>
-        <TextBox x:Name="balBox" HorizontalAlignment="Left" Margin="347,269,0,0" TextWrapping="Wrap" Text="Balance" VerticalAlignment="Top" Width="301"/>
-        <TextBox x:Name="indexBox" HorizontalAlignment="Left" Margin="379,356,0,0" TextWrapping="Wrap" Text="Index" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="goBtn" Content="Go" HorizontalAlignment="Left" Margin="528,355,0,0" VerticalAlignment="Top" Width="120" Click="goBtn_Click"/>
-        <TextBlock x:Name="ItemCountBlock" HorizontalAlignment="Left" Margin="379,390,0,0" TextWrapping="Wrap" Text="Total Items:" VerticalAlignment="Top" Width="120"/>
-        <Image x:Name="profilePic" HorizontalAlignment="Left" Height="100" Margin="170,153,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox x:Name="searchBox" HorizontalAlignment="Left" Margin="170,76,0,0" TextWrapping="Wrap" Text="Search Here" VerticalAlignment="Top" Width="334"/>
-        <Button x:Name="SearchBtn" Content="Search" HorizontalAlignment="Left" Margin="528,75,0,0" VerticalAlignment="Top" Width="120" Click="SearchBtn_Click"/>
+        <TextBox x:Name="fNameBox" HorizontalAlignment="Left" Margin="239,139,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="244"/>
+        <TextBox x:Name="lNameBox" HorizontalAlignment="Left" Margin="239,170,0,0" TextWrapping="Wrap" Text="LastName" VerticalAlignment="Top" Width="244"/>
+        <TextBox x:Name="accNoBox" HorizontalAlignment="Left" Margin="239,198,0,0" TextWrapping="Wrap" Text="Account No" VerticalAlignment="Top" Width="244"/>
+        <TextBox x:Name="pinBox" HorizontalAlignment="Left" Margin="239,226,0,0" TextWrapping="Wrap" Text="PIN" VerticalAlignment="Top" Width="244"/>
+        <TextBox x:Name="balBox" HorizontalAlignment="Left" Margin="239,255,0,0" TextWrapping="Wrap" Text="Balance" VerticalAlignment="Top" Width="244"/>
+        <TextBox x:Name="indexBox" HorizontalAlignment="Left" Margin="149,342,0,0" TextWrapping="Wrap" Text="Index" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="goBtn" Content="Go" HorizontalAlignment="Left" Margin="306,341,0,0" VerticalAlignment="Top" Width="120" Click="goBtn_Click"/>
+        <TextBlock x:Name="ItemCountBlock" HorizontalAlignment="Left" Margin="149,376,0,0" TextWrapping="Wrap" Text="Total Items:" VerticalAlignment="Top" Width="120"/>
+        <Image x:Name="profilePic" HorizontalAlignment="Left" Height="118" Margin="507,139,0,0" VerticalAlignment="Top" Width="118"/>
+        <TextBox x:Name="searchBox" HorizontalAlignment="Left" Margin="149,62,0,0" TextWrapping="Wrap" Text="Search Here" VerticalAlignment="Top" Width="334"/>
+        <Button x:Name="SearchBtn" Content="Search" HorizontalAlignment="Left" Margin="507,61,0,0" VerticalAlignment="Top" Width="120" Click="SearchBtn_Click"/>
+        <Label x:Name="WindowLbl" Content="Async Client" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <ProgressBar x:Name="ProgressBar1" HorizontalAlignment="Left" Height="10" Margin="149,97,0,0" VerticalAlignment="Top" Width="334"/>
+        <Label Content="First Name" HorizontalAlignment="Left" Margin="149,135,0,0" VerticalAlignment="Top"/>
+        <Label Content="Last Name" HorizontalAlignment="Left" Margin="149,166,0,0" VerticalAlignment="Top"/>
+        <Label Content="Account No" HorizontalAlignment="Left" Margin="149,194,0,0" VerticalAlignment="Top"/>
+        <Label Content="PIN" HorizontalAlignment="Left" Margin="149,222,0,0" VerticalAlignment="Top"/>
+        <Label Content="Balance" HorizontalAlignment="Left" Margin="149,251,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

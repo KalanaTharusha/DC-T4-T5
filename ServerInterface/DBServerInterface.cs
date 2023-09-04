@@ -16,7 +16,6 @@ namespace ServerInterface
 
         [OperationContract]
         [FaultContract(typeof(IndexFault))]
-        [FaultContract(typeof(BitmapFault))]
         void GetValuesForEntry(int index, out uint acctNo, out uint pin, out int bal, out string fName, out string lName, out String bitmapString);
     }
 }

@@ -46,17 +46,11 @@ namespace Server
                     bitmapString = Convert.ToBase64String(imageBytes);
                 }
             }
-            catch (IndexOutOfRangeException)
+            catch (Exception)
             {
                 IndexFault indexFault = new IndexFault();
                 indexFault.Message = "Index Out of Bound";
-                throw new FaultException<IndexFault>(indexFault);
-            }
-            catch (Exception ex)
-            {
-                BitmapFault bitmapFault = new BitmapFault();
-                bitmapFault.Message = "Error while encoding the bitmap\n" + ex.Message;
-                throw new FaultException<BitmapFault>(bitmapFault);
+                throw new FaultException<IndexFault>(indexFault, new FaultReason("Index Out of Bound"));
             }
         }
     }

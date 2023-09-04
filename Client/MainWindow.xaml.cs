@@ -33,7 +33,6 @@ namespace Client
     public partial class MainWindow : Window
     {
         private BusinessServerInterface foob;
-        //string term;
 
         private SearchDel searchDel;
         
@@ -63,62 +62,51 @@ namespace Client
             String bitmapString = null;
             Bitmap bitmap = null;
 
+            clearData();
             searchBox.Text = string.Empty;
 
             try
             {
                 index = Int32.Parse(indexBox.Text);
 
-                if (index >= 0 && index < foob.GetNumEntries())
+                foob.GetValuesForEntry(index, out acct, out pin, out bal, out fName, out lName, out bitmapString);
+
+                fNameBox.Text = fName;
+                lNameBox.Text = lName;
+                accNoBox.Text = acct.ToString();
+                pinBox.Text = pin.ToString("D4");
+                balBox.Text = bal.ToString("C");
+
+                if (bitmapString != null)
                 {
-
-                    foob.GetValuesForEntry(index, out acct, out pin, out bal, out fName, out lName, out bitmapString);
-
-                    fNameBox.Text = fName;
-                    lNameBox.Text = lName;
-                    accNoBox.Text = acct.ToString();
-                    pinBox.Text = pin.ToString("D4");
-                    balBox.Text = bal.ToString("C");
-
-                    if (bitmapString != null)
+                    // convert base64 string to bitmap and then display it through the UI thread
+                    this.Dispatcher.Invoke(() =>
                     {
-                        // convert base64 string to bitmap and then display it through the UI thread
-                        this.Dispatcher.Invoke(() =>
+                        try
                         {
-                            try
+                            byte[] imageBytes = Convert.FromBase64String(bitmapString);
+
+                            using (MemoryStream memoryStream = new MemoryStream(imageBytes))
                             {
-                                byte[] imageBytes = Convert.FromBase64String(bitmapString);
-
-                                using (MemoryStream memoryStream = new MemoryStream(imageBytes))
-                                {
-                                    bitmap = new Bitmap(memoryStream);
-                                }
-
-                                ImageSourceConverter converter = new ImageSourceConverter();
-                                var pic = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                                profilePic.Source = pic;
+                                bitmap = new Bitmap(memoryStream);
                             }
-                            catch
-                            {
-                                throw new Exception("Error while decoding the bitmap");
-                            }
-                        });
-                    }
 
+                            ImageSourceConverter converter = new ImageSourceConverter();
+                            var pic = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                            profilePic.Source = pic;
+                        }
+                        catch
+                        {
+                            throw new Exception("Error while decoding the bitmap");
+                        }
+                    });
                 }
-                else
-                {
-                    throw new Exception("Invalid Index");
-                }
+
             }
             catch (FaultException<IndexFault> ex)
             {
-                MessageBox.Show(ex.Message);
-            }
-            catch (FaultException<BitmapFault> ex)
-            {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Detail.Message);
             }
             catch (Exception ex)
             {
@@ -129,6 +117,18 @@ namespace Client
 
         private async void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
+            clearData();
+
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                searchBox.IsReadOnly = true;
+                indexBox.Text = string.Empty;
+                indexBox.IsReadOnly = true;
+                SearchBtn.IsEnabled = false;
+                goBtn.IsEnabled = false;
+                ProgressBar1.IsIndeterminate = true;
+
+            }));
 
             searchDel = Search;
             AsyncCallback callback;
@@ -182,7 +182,12 @@ namespace Client
             }
             catch (FaultException<SearchFault> ex)
             {
-                Console.WriteLine(ex.Message);
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    ProgressBar1.IsIndeterminate = false;
+                }));
+
+                MessageBox.Show(ex.Detail.Message);
             }
 
             return null;
@@ -198,7 +203,19 @@ namespace Client
             {
                 searchDel = (SearchDel)asyncObj.AsyncDelegate;
                 iDataStuct = searchDel.EndInvoke(asyncObj);
-                UpdateGUI(iDataStuct);
+                if (iDataStuct != null)
+                {
+                    UpdateGUI(iDataStuct);
+                }
+
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    searchBox.IsReadOnly = false;
+                    indexBox.IsReadOnly = false;
+                    SearchBtn.IsEnabled = true;
+                    goBtn.IsEnabled = true;
+                    ProgressBar1.IsIndeterminate = false;
+                }));
             }
 
             asyncObj.AsyncWaitHandle.Close();
@@ -229,6 +246,19 @@ namespace Client
                     throw new Exception("Error while decoding the bitmap");
                 }
             }));
+        }
+
+        private void clearData()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                fNameBox.Text = string.Empty;
+                lNameBox.Text = string.Empty;
+                accNoBox.Text = string.Empty;
+                pinBox.Text = string.Empty;
+                balBox.Text = string.Empty;
+                profilePic.Source = null;
+            });
         }
 
     }

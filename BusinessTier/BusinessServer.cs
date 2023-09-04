@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using BusinessTierInterface;
 using ServerInterface;
+using System.Threading;
 
 namespace BusinessTier
 {
@@ -44,6 +45,7 @@ namespace BusinessTier
                 foob.GetValuesForEntry(i, out _, out _, out _, out _, out string currLName, out _);
                 if (currLName.ToLower() == term.ToLower())
                 {
+                    Thread.Sleep(2000);
                     foob.GetValuesForEntry(i, out acctNo, out pin, out bal, out fName, out lName, out bitmapString);
                     break;
                 }
@@ -51,7 +53,7 @@ namespace BusinessTier
 
             if (fName == null)
             {
-                throw new FaultException<SearchFault>(new SearchFault() { Message = "Not Found"});
+                throw new FaultException<SearchFault>(new SearchFault() { Message = "Not Found"}, new FaultReason("Not Found"));
             }
         }
     }

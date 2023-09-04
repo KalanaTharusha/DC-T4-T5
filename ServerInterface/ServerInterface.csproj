@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BitmapFault.cs" />
     <Compile Include="DBServerInterface.cs" />
     <Compile Include="IndexFault.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

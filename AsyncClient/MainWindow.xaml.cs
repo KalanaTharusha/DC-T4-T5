@@ -63,56 +63,44 @@ namespace AsyncClient
             {
                 index = Int32.Parse(indexBox.Text);
 
-                if (index >= 0 && index < foob.GetNumEntries())
+                foob.GetValuesForEntry(index, out acct, out pin, out bal, out fName, out lName, out bitmapString);
+
+                fNameBox.Text = fName;
+                lNameBox.Text = lName;
+                accNoBox.Text = acct.ToString();
+                pinBox.Text = pin.ToString("D4");
+                balBox.Text = bal.ToString("C");
+
+                if (bitmapString != null)
                 {
-
-                    foob.GetValuesForEntry(index, out acct, out pin, out bal, out fName, out lName, out bitmapString);
-
-                    fNameBox.Text = fName;
-                    lNameBox.Text = lName;
-                    accNoBox.Text = acct.ToString();
-                    pinBox.Text = pin.ToString("D4");
-                    balBox.Text = bal.ToString("C");
-
-                    if (bitmapString != null)
+                    // convert base64 string to bitmap and then display it through the UI thread
+                    this.Dispatcher.Invoke(() =>
                     {
-                        // convert base64 string to bitmap and then display it through the UI thread
-                        this.Dispatcher.Invoke(() =>
+                        try
                         {
-                            try
+                            byte[] imageBytes = Convert.FromBase64String(bitmapString);
+
+                            using (MemoryStream memoryStream = new MemoryStream(imageBytes))
                             {
-                                byte[] imageBytes = Convert.FromBase64String(bitmapString);
-
-                                using (MemoryStream memoryStream = new MemoryStream(imageBytes))
-                                {
-                                    bitmap = new Bitmap(memoryStream);
-                                }
-
-                                ImageSourceConverter converter = new ImageSourceConverter();
-                                var pic = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                                profilePic.Source = pic;
+                                bitmap = new Bitmap(memoryStream);
                             }
-                            catch
-                            {
-                                throw new Exception("Error while decoding the bitmap");
-                            }
-                        });
-                    }
 
+                            ImageSourceConverter converter = new ImageSourceConverter();
+                            var pic = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                            profilePic.Source = pic;
+                        }
+                        catch
+                        {
+                            throw new Exception("Error while decoding the bitmap");
+                        }
+                    });
                 }
-                else
-                {
-                    throw new Exception("Invalid Index");
-                }
+
             }
             catch (FaultException<IndexFault> ex)
             {
-                MessageBox.Show(ex.Message);
-            }
-            catch (FaultException<BitmapFault> ex)
-            {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Detail.Message);
             }
             catch (Exception ex)
             {
@@ -123,15 +111,38 @@ namespace AsyncClient
 
         private async void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
-            indexBox.Text = string.Empty;
+            clearData();
             term = searchBox.Text;
+
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                searchBox.IsReadOnly = true;
+                indexBox.Text = string.Empty;
+                indexBox.IsReadOnly = true;
+                SearchBtn.IsEnabled = false;
+                goBtn.IsEnabled = false;
+                ProgressBar1.IsIndeterminate = true;
+
+            }));
 
             Task<DataStruct> task = new Task<DataStruct>(Search);
             task.Start();
 
             DataStruct ds = await task;
 
-            UpdateGUI(ds);
+            if(ds != null)
+            {
+                UpdateGUI(ds);
+            }
+
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                searchBox.IsReadOnly = false;
+                indexBox.IsReadOnly = false;
+                SearchBtn.IsEnabled = true;
+                goBtn.IsEnabled = true;
+                ProgressBar1.IsIndeterminate = false;
+            }));
 
         }
 
@@ -178,7 +189,12 @@ namespace AsyncClient
             }
             catch (FaultException<SearchFault> ex)
             {
-                Console.WriteLine(ex.Message);
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    ProgressBar1.IsIndeterminate = false;
+                }));
+
+                MessageBox.Show(ex.Detail.Message);
             }
 
             return null;
@@ -186,14 +202,13 @@ namespace AsyncClient
 
         private void UpdateGUI(DataStruct ds)
         {
-            fNameBox.Text = ds.firstName;
-            lNameBox.Text = ds.lastName;
-            accNoBox.Text = ds.acctNo.ToString();
-            pinBox.Text = ds.pin.ToString("D4");
-            balBox.Text = ds.balance.ToString("C");
+            fNameBox.Dispatcher.Invoke(new Action(() => { fNameBox.Text = ds.firstName; }));
+            lNameBox.Dispatcher.Invoke(new Action(() => { lNameBox.Text = ds.lastName; }));
+            accNoBox.Dispatcher.Invoke(new Action(() => { accNoBox.Text = ds.acctNo.ToString(); }));
+            pinBox.Dispatcher.Invoke(new Action(() => { pinBox.Text = ds.pin.ToString("D4"); }));
+            balBox.Dispatcher.Invoke(new Action(() => { balBox.Text = ds.balance.ToString("C"); }));
 
-            // display the profile picture through the UI thread
-            this.Dispatcher.Invoke(() =>
+            profilePic.Dispatcher.Invoke(new Action(() =>
             {
                 try
                 {
@@ -207,6 +222,19 @@ namespace AsyncClient
                 {
                     throw new Exception("Error while decoding the bitmap");
                 }
+            }));
+        }
+
+        private void clearData()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                fNameBox.Text = string.Empty;
+                lNameBox.Text = string.Empty;
+                accNoBox.Text = string.Empty;
+                pinBox.Text = string.Empty;
+                balBox.Text = string.Empty;
+                profilePic.Source = null;
             });
         }
 

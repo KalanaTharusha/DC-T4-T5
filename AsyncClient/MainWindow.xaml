@@ -1,9 +1,9 @@
-﻿<Window x:Class="Client.MainWindow"
+﻿<Window x:Class="AsyncClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Client"
+        xmlns:local="clr-namespace:AsyncClient"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -18,6 +18,5 @@
         <Image x:Name="profilePic" HorizontalAlignment="Left" Height="100" Margin="170,153,0,0" VerticalAlignment="Top" Width="100"/>
         <TextBox x:Name="searchBox" HorizontalAlignment="Left" Margin="170,76,0,0" TextWrapping="Wrap" Text="Search Here" VerticalAlignment="Top" Width="334"/>
         <Button x:Name="SearchBtn" Content="Search" HorizontalAlignment="Left" Margin="528,75,0,0" VerticalAlignment="Top" Width="120" Click="SearchBtn_Click"/>
-
     </Grid>
 </Window>

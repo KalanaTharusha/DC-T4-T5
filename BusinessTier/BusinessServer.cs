@@ -31,5 +31,28 @@ namespace BusinessTier
         {
             foob.GetValuesForEntry(index, out acctNo, out pin, out bal, out fName, out lName, out bitmapString);
         }
+
+        public void Search(string term, out uint acctNo, out uint pin, out int bal, out string fName, out string lName, out string bitmapString)
+        {
+            acctNo = 0; pin = 0; bal = 0;
+            fName = null; lName = null; bitmapString = null;
+
+            int numOfEntries = foob.GetNumEntries();
+
+            for (int i = 0; i < numOfEntries; i++)
+            {
+                foob.GetValuesForEntry(i, out _, out _, out _, out _, out string currLName, out _);
+                if (currLName.ToLower() == term.ToLower())
+                {
+                    foob.GetValuesForEntry(i, out acctNo, out pin, out bal, out fName, out lName, out bitmapString);
+                    break;
+                }
+            }
+
+            if (fName == null)
+            {
+                throw new FaultException<SearchFault>(new SearchFault() { Message = "Not Found"});
+            }
+        }
     }
 }

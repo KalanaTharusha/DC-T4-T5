@@ -15,5 +15,9 @@ namespace BusinessTierInterface
 
         [OperationContract]
         void GetValuesForEntry(int index, out uint acctNo, out uint pin, out int bal, out string fName, out string lName, out String bitmapString);
+
+        [OperationContract]
+        [FaultContract(typeof(SearchFault))]
+        void Search(string term, out uint acctNo, out uint pin, out int bal, out string fName, out string lName, out String bitmapString);
     }
 }

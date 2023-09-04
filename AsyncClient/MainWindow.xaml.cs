@@ -18,26 +18,20 @@ using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using System.Drawing;
 using System.Windows.Interop;
-using ServerInterface;
 using BusinessTierInterface;
 using System.IO;
 using DataLibrary;
-using System.Runtime.Remoting.Messaging;
+using ServerInterface;
 
-namespace Client
+namespace AsyncClient
 {
-    public delegate DataStruct SearchDel(string term);
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         private BusinessServerInterface foob;
-        //string term;
-
-        private SearchDel searchDel;
-        
-
+        string term;
         public MainWindow()
         {
             InitializeComponent();
@@ -129,17 +123,19 @@ namespace Client
 
         private async void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
+            indexBox.Text = string.Empty;
+            term = searchBox.Text;
 
-            searchDel = Search;
-            AsyncCallback callback;
+            Task<DataStruct> task = new Task<DataStruct>(Search);
+            task.Start();
 
-            callback = this.OnSearchCompletion;
+            DataStruct ds = await task;
 
-            IAsyncResult result = searchDel.BeginInvoke(searchBox.Text, callback, null);
+            UpdateGUI(ds);
 
         }
 
-        private DataStruct Search(String term)
+        private DataStruct Search()
         {
             string fName = "", lName = "";
             int bal = 0;
@@ -159,7 +155,7 @@ namespace Client
                     ds.firstName = fName;
                     ds.lastName = lName;
 
-                    // convert base64 string to bitmap and then assign it to the DataStruct object
+                    // convert base64 string to bitmap and then assign to the DataStruct object
                     try
                     {
                         byte[] imageBytes = Convert.FromBase64String(bitmapString);
@@ -188,33 +184,16 @@ namespace Client
             return null;
         }
 
-        private void OnSearchCompletion(IAsyncResult asyncResult)
-        {
-            DataStruct iDataStuct = null;
-            SearchDel searchDel = null;
-            AsyncResult asyncObj = (AsyncResult)asyncResult;
-
-            if (asyncObj.EndInvokeCalled == false)
-            {
-                searchDel = (SearchDel)asyncObj.AsyncDelegate;
-                iDataStuct = searchDel.EndInvoke(asyncObj);
-                UpdateGUI(iDataStuct);
-            }
-
-            asyncObj.AsyncWaitHandle.Close();
-
-
-        }
-
         private void UpdateGUI(DataStruct ds)
         {
-            fNameBox.Dispatcher.Invoke(new Action(() => { fNameBox.Text = ds.firstName; }));
-            lNameBox.Dispatcher.Invoke(new Action(() => { lNameBox.Text = ds.lastName; }));
-            accNoBox.Dispatcher.Invoke(new Action(() => { accNoBox.Text = ds.acctNo.ToString(); }));
-            pinBox.Dispatcher.Invoke(new Action(() => { pinBox.Text = ds.pin.ToString("D4"); }));
-            balBox.Dispatcher.Invoke(new Action(() => { balBox.Text = ds.balance.ToString("C"); }));
+            fNameBox.Text = ds.firstName;
+            lNameBox.Text = ds.lastName;
+            accNoBox.Text = ds.acctNo.ToString();
+            pinBox.Text = ds.pin.ToString("D4");
+            balBox.Text = ds.balance.ToString("C");
 
-            profilePic.Dispatcher.Invoke(new Action(() =>
+            // display the profile picture through the UI thread
+            this.Dispatcher.Invoke(() =>
             {
                 try
                 {
@@ -228,7 +207,7 @@ namespace Client
                 {
                     throw new Exception("Error while decoding the bitmap");
                 }
-            }));
+            });
         }
 
     }

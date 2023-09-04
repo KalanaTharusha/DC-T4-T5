@@ -16,10 +16,10 @@ namespace DataLibrary
         public Database()
         {
             dataList = new List<DataStruct>();
+            DatabaseGenerator databaseGenerator = new DatabaseGenerator();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                DatabaseGenerator databaseGenerator = new DatabaseGenerator();
                 databaseGenerator.GetNextAccount(out uint pin, out uint accNo, out string firstName, out string lastName, out int balance, out Bitmap bitmap);
 
                 DataStruct data = new DataStruct(pin, accNo, firstName, lastName, balance, bitmap);

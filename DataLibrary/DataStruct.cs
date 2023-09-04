@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace DataLibrary
 {
-    internal class DataStruct
+    public class DataStruct
     {
         public uint acctNo;
         public uint pin;
